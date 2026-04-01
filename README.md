@@ -39,4 +39,4 @@ setup-git.bat
 ```
 
 ## Jogar online
-https://siruben.github.io/compilas/
+https://siruben.github.io/Compilas/
