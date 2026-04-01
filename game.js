@@ -10,7 +10,7 @@ const NEON = {
 
 // ─── Canvas responsivo ────────────────────────────────────────
 const COLS = 10;
-const ROWS = 20;
+const ROWS = 22;
 
 const boardCanvas   = document.getElementById('board');
 const ctx           = boardCanvas.getContext('2d');
@@ -20,22 +20,21 @@ const pCtx          = previewCanvas.getContext('2d');
 let BLOCK = 28;
 
 function resizeCanvas() {
-  const wrapper    = document.getElementById('wrapper');
-  const hud        = document.getElementById('hud-top');
   const controls   = document.getElementById('touch-controls');
   const actions    = document.getElementById('action-buttons');
   const header     = document.getElementById('header');
+  const sideHud    = document.getElementById('side-hud');
 
-  // espaço disponível para o board
   const totalH     = window.innerHeight;
-  const usedH      = header.offsetHeight + hud.offsetHeight +
-                     controls.offsetHeight + actions.offsetHeight + 60;
-  const availH     = totalH - usedH;
-  const availW     = Math.min(window.innerWidth, 480) - 8;
+  const usedH      = header.offsetHeight + controls.offsetHeight + actions.offsetHeight + 50;
+  const availH     = Math.max(totalH - usedH, 200);
+
+  const sideW      = (sideHud ? sideHud.offsetWidth : 66) + 10;
+  const availW     = Math.min(window.innerWidth, 480) - 8 - sideW;
 
   const blockByH   = Math.floor(availH / ROWS);
   const blockByW   = Math.floor(availW / COLS);
-  BLOCK = Math.max(18, Math.min(blockByH, blockByW));
+  BLOCK = Math.max(16, Math.min(blockByH, blockByW));
 
   boardCanvas.width  = COLS * BLOCK;
   boardCanvas.height = ROWS * BLOCK;
@@ -290,10 +289,11 @@ bindTouch('tc-right',  moveRight);
 bindTouch('tc-down',   moveDown);
 bindTouch('tc-rotate', rotate);
 bindTouch('tc-drop',   hardDrop);
+bindTouch('tc-pause',  togglePause);
 
 // ─── Teclado (PC) ────────────────────────────────────────────
 document.addEventListener('keydown', e => {
-  if (e.key==='p'||e.key==='P') { if (!gameOver) paused=!paused; return; }
+  if (e.key==='p'||e.key==='P') { if (!gameOver) togglePause(); return; }
   if (paused||gameOver) return;
   switch(e.key) {
     case 'ArrowLeft':  e.preventDefault(); moveLeft();  break;
@@ -304,17 +304,26 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// ─── Botões ──────────────────────────────────────────────────
-document.getElementById('btn-restart').addEventListener('click', initGame);
-document.getElementById('btn-pause').addEventListener('click', () => {
+function togglePause() {
   if (gameOver) return;
   paused = !paused;
   if (paused) showOverlay('PAUSADO', '#cc00ff', null);
   else hideOverlay();
+}
+
+// ─── Botões ──────────────────────────────────────────────────
+document.getElementById('btn-restart').addEventListener('click', initGame);
+
+// ─── Ecrã inicial ────────────────────────────────────────────
+document.getElementById('btn-play').addEventListener('click', () => {
+  document.getElementById('start-screen').classList.add('hidden');
+  initGame();
 });
 
 // ─── Resize ──────────────────────────────────────────────────
 window.addEventListener('resize', () => { resizeCanvas(); draw(); });
 
 // ─── Start ───────────────────────────────────────────────────
-window.addEventListener('load', initGame);
+window.addEventListener('load', () => {
+  resizeCanvas();
+});

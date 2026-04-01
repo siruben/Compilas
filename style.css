@@ -39,13 +39,46 @@ body {
   justify-content: center;
   align-items: flex-start;
   min-height: 100vh;
-  padding: 1rem;
+  padding: 0;
 }
 
+/* ── Ecrã inicial ── */
+#start-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  z-index: 100;
+}
+
+#start-screen.hidden { display: none; }
+
+#start-title {
+  font-size: clamp(1.6rem, 8vw, 3rem);
+  color: var(--cyan);
+  text-shadow: 0 0 10px var(--cyan), 0 0 30px var(--cyan);
+  letter-spacing: 6px;
+  animation: blink-title 0.9s step-end infinite;
+}
+
+@keyframes blink-title {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #start-title { animation: none; }
+}
+
+/* ── Wrapper ── */
 #wrapper {
   width: 100%;
   max-width: 480px;
-  min-height: 100dvh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -68,40 +101,48 @@ body {
   letter-spacing: 6px;
 }
 
-#title-sub {
-  font-size: clamp(0.4rem, 2.5vw, 0.65rem);
-  color: var(--purple);
-  text-shadow: 0 0 6px var(--purple);
-  letter-spacing: 4px;
+/* ── Área de jogo (board + hud lateral) ── */
+#game-area {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 6px;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
 }
 
-/* ── HUD topo ── */
-#hud-top {
+/* ── HUD lateral ── */
+#side-hud {
   display: flex;
-  width: 100%;
-  justify-content: space-around;
-  align-items: center;
+  flex-direction: column;
+  gap: 8px;
   background: var(--bg2);
   border: 1px solid #1a1a3a;
   border-radius: 6px;
-  padding: 4px 2px;
+  padding: 8px 4px;
+  min-width: 62px;
+  max-width: 70px;
+  align-items: center;
+  align-self: stretch;
 }
 
 .hud-box {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
+  width: 100%;
 }
 
 .hud-label {
-  font-size: clamp(0.3rem, 2vw, 0.45rem);
+  font-size: clamp(0.28rem, 1.8vw, 0.4rem);
   color: #555;
   letter-spacing: 1px;
 }
 
 .hud-value {
-  font-size: clamp(0.7rem, 4vw, 1.1rem);
+  font-size: clamp(0.65rem, 3.5vw, 1rem);
   letter-spacing: 1px;
 }
 
@@ -115,6 +156,8 @@ body {
   box-shadow: 0 0 6px var(--purple);
   background: var(--bg);
   border-radius: 3px;
+  width: 56px;
+  height: 56px;
 }
 
 /* ── Tabuleiro ── */
@@ -123,7 +166,8 @@ body {
   flex: 1;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  min-height: 0;
 }
 
 #board {
@@ -184,8 +228,7 @@ body {
   line-height: 1.2;
   text-align: center;
   padding: 10px 0;
-  /* tamanho */
-  width: clamp(60px, 20vw, 90px);
+  width: clamp(70px, 22vw, 100px);
   height: clamp(50px, 13vw, 70px);
   display: flex;
   flex-direction: column;
@@ -216,7 +259,6 @@ body {
   color: var(--purple);
   text-shadow: 0 0 6px var(--purple);
   box-shadow: 0 0 8px #cc00ff33;
-  width: clamp(160px, 50vw, 240px);
 }
 .tc-btn.purple:active {
   background: #cc00ff22;
@@ -228,7 +270,6 @@ body {
   color: var(--yellow);
   text-shadow: 0 0 6px var(--yellow);
   box-shadow: 0 0 8px #ffff0033;
-  width: clamp(160px, 50vw, 240px);
 }
 .tc-btn.yellow:active {
   background: #ffff0022;
@@ -272,27 +313,3 @@ body {
   box-shadow: 0 0 8px #cc00ff33;
 }
 .action-btn.purple:active { background: #cc00ff22; }
-
-/* Responsivo */
-@media (max-width: 600px) {
-  h1 { font-size: 1.1rem; }
-  h2 { font-size: 0.5rem; }
-
-  #game-area {
-    gap: 0.5rem;
-  }
-
-  .hud {
-    min-width: 60px;
-  }
-
-  .hud #score, .hud #level, .hud #lines, .hud #combo {
-    font-size: 0.8rem;
-  }
-
-  .hud-label { font-size: 0.35rem; }
-
-  #preview { width: 80px; height: 80px; }
-
-  .controls-info { display: none; }
-}
