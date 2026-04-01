@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — COMPILAS?</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cyan:   #00ffff;
+      --purple: #cc00ff;
+      --red:    #ff2244;
+      --yellow: #ffff00;
+      --bg:     #07070f;
+      --bg2:    #0d0d1a;
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--bg);
+      color: #fff;
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      max-width: 480px;
+    }
+
+    .title {
+      font-size: clamp(1.2rem, 6vw, 2rem);
+      color: var(--cyan);
+      text-shadow: 0 0 8px var(--cyan), 0 0 20px var(--cyan);
+      letter-spacing: 6px;
+      margin-bottom: 0.4rem;
+    }
+
+    .code {
+      font-size: clamp(3rem, 20vw, 6rem);
+      color: var(--red);
+      text-shadow: 0 0 12px var(--red), 0 0 40px var(--red);
+      letter-spacing: 8px;
+      line-height: 1;
+      margin: 1.5rem 0;
+    }
+
+    .msg {
+      font-size: clamp(0.55rem, 3vw, 0.8rem);
+      color: var(--purple);
+      text-shadow: 0 0 6px var(--purple);
+      letter-spacing: 3px;
+      line-height: 2;
+      margin-bottom: 2rem;
+      white-space: pre-line;
+    }
+
+    .btn {
+      display: inline-block;
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: bold;
+      font-size: clamp(0.5rem, 3vw, 0.7rem);
+      letter-spacing: 2px;
+      padding: 12px 24px;
+      background: var(--bg2);
+      border: 2px solid var(--cyan);
+      color: var(--cyan);
+      text-shadow: 0 0 6px var(--cyan);
+      box-shadow: 0 0 10px #00ffff33;
+      border-radius: 6px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.1s, box-shadow 0.1s;
+    }
+
+    .btn:hover, .btn:focus {
+      background: #00ffff22;
+      box-shadow: 0 0 20px var(--cyan);
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">COMPILAS?</div>
+    <div class="code">404</div>
+    <div class="msg">ERRO: SEGMENTATION FAULT
+PÁGINA NÃO ENCONTRADA</div>
+    <a class="btn" href="/">⟳ RECOMPILAR</a>
+  </div>
+</body>
+</html>
