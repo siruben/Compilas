@@ -1,0 +1,298 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0; padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Fonte pixel embutida via system fallback */
+@font-face {
+  font-family: 'PixelGame';
+  src: local('Courier New'), local('Courier');
+}
+
+:root {
+  --cyan:   #00ffff;
+  --purple: #cc00ff;
+  --yellow: #ffff00;
+  --pink:   #ff00aa;
+  --green:  #00ff88;
+  --red:    #ff2244;
+  --bg:     #07070f;
+  --bg2:    #0d0d1a;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  touch-action: none;
+}
+
+body {
+  background: var(--bg);
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+#wrapper {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 4px;
+  gap: 4px;
+}
+
+/* ── Header ── */
+#header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.3;
+}
+
+#title-main {
+  font-size: clamp(1.2rem, 6vw, 2rem);
+  color: var(--cyan);
+  text-shadow: 0 0 8px var(--cyan), 0 0 20px var(--cyan);
+  letter-spacing: 6px;
+}
+
+#title-sub {
+  font-size: clamp(0.4rem, 2.5vw, 0.65rem);
+  color: var(--purple);
+  text-shadow: 0 0 6px var(--purple);
+  letter-spacing: 4px;
+}
+
+/* ── HUD topo ── */
+#hud-top {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+  background: var(--bg2);
+  border: 1px solid #1a1a3a;
+  border-radius: 6px;
+  padding: 4px 2px;
+}
+
+.hud-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.hud-label {
+  font-size: clamp(0.3rem, 2vw, 0.45rem);
+  color: #555;
+  letter-spacing: 1px;
+}
+
+.hud-value {
+  font-size: clamp(0.7rem, 4vw, 1.1rem);
+  letter-spacing: 1px;
+}
+
+.cyan   { color: var(--cyan);   text-shadow: 0 0 8px var(--cyan); }
+.yellow { color: var(--yellow); text-shadow: 0 0 8px var(--yellow); }
+.purple { color: var(--purple); text-shadow: 0 0 8px var(--purple); }
+
+#preview {
+  display: block;
+  border: 1px solid var(--purple);
+  box-shadow: 0 0 6px var(--purple);
+  background: var(--bg);
+  border-radius: 3px;
+}
+
+/* ── Tabuleiro ── */
+#board-container {
+  position: relative;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#board {
+  display: block;
+  border: 2px solid var(--cyan);
+  box-shadow: 0 0 12px var(--cyan), 0 0 30px #00ffff44;
+  background: var(--bg);
+  border-radius: 2px;
+}
+
+/* ── Overlay ── */
+#overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #00000099;
+  border-radius: 2px;
+}
+
+#overlay.hidden { display: none; }
+
+#overlay-msg {
+  font-size: clamp(0.7rem, 4vw, 1rem);
+  text-align: center;
+  white-space: pre-line;
+  line-height: 2;
+  letter-spacing: 2px;
+}
+
+/* ── Controlos touch ── */
+#touch-controls {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.touch-row {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+.tc-btn {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: clamp(0.6rem, 3.5vw, 0.9rem);
+  background: var(--bg2);
+  border-radius: 8px;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background 0.1s, box-shadow 0.1s;
+  line-height: 1.2;
+  text-align: center;
+  padding: 10px 0;
+  /* tamanho */
+  width: clamp(60px, 20vw, 90px);
+  height: clamp(50px, 13vw, 70px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.tc-btn span {
+  font-size: clamp(0.3rem, 2vw, 0.45rem);
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+/* cores dos botões */
+.tc-btn.cyan {
+  border: 2px solid var(--cyan);
+  color: var(--cyan);
+  text-shadow: 0 0 6px var(--cyan);
+  box-shadow: 0 0 8px #00ffff33;
+}
+.tc-btn.cyan:active {
+  background: #00ffff22;
+  box-shadow: 0 0 16px var(--cyan);
+}
+
+.tc-btn.purple {
+  border: 2px solid var(--purple);
+  color: var(--purple);
+  text-shadow: 0 0 6px var(--purple);
+  box-shadow: 0 0 8px #cc00ff33;
+  width: clamp(160px, 50vw, 240px);
+}
+.tc-btn.purple:active {
+  background: #cc00ff22;
+  box-shadow: 0 0 16px var(--purple);
+}
+
+.tc-btn.yellow {
+  border: 2px solid var(--yellow);
+  color: var(--yellow);
+  text-shadow: 0 0 6px var(--yellow);
+  box-shadow: 0 0 8px #ffff0033;
+  width: clamp(160px, 50vw, 240px);
+}
+.tc-btn.yellow:active {
+  background: #ffff0022;
+  box-shadow: 0 0 16px var(--yellow);
+}
+
+/* ── Botões ação ── */
+#action-buttons {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  justify-content: center;
+}
+
+.action-btn {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: clamp(0.4rem, 2.5vw, 0.6rem);
+  padding: 8px 14px;
+  background: var(--bg2);
+  border-radius: 6px;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  letter-spacing: 2px;
+  transition: background 0.1s;
+}
+
+.action-btn.cyan {
+  border: 2px solid var(--cyan);
+  color: var(--cyan);
+  text-shadow: 0 0 5px var(--cyan);
+  box-shadow: 0 0 8px #00ffff33;
+}
+.action-btn.cyan:active { background: #00ffff22; }
+
+.action-btn.purple {
+  border: 2px solid var(--purple);
+  color: var(--purple);
+  text-shadow: 0 0 5px var(--purple);
+  box-shadow: 0 0 8px #cc00ff33;
+}
+.action-btn.purple:active { background: #cc00ff22; }
+
+/* Responsivo */
+@media (max-width: 600px) {
+  h1 { font-size: 1.1rem; }
+  h2 { font-size: 0.5rem; }
+
+  #game-area {
+    gap: 0.5rem;
+  }
+
+  .hud {
+    min-width: 60px;
+  }
+
+  .hud #score, .hud #level, .hud #lines, .hud #combo {
+    font-size: 0.8rem;
+  }
+
+  .hud-label { font-size: 0.35rem; }
+
+  #preview { width: 80px; height: 80px; }
+
+  .controls-info { display: none; }
+}

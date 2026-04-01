@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>COMPILAS?</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="wrapper">
+
+    <div id="header">
+      <span id="title-main">COMPILAS?</span>
+      <span id="title-sub">O JOGO DO T</span>
+    </div>
+
+    <div id="hud-top">
+      <div class="hud-box">
+        <div class="hud-label">SCORE</div>
+        <div id="score" class="hud-value cyan">0</div>
+      </div>
+      <div class="hud-box">
+        <div class="hud-label">NÍVEL</div>
+        <div id="level" class="hud-value cyan">1</div>
+      </div>
+      <div class="hud-box">
+        <div class="hud-label">COMBO</div>
+        <div id="combo" class="hud-value yellow">x0</div>
+      </div>
+      <div class="hud-box">
+        <div class="hud-label">PRÓXIMO</div>
+        <canvas id="preview" width="60" height="60"></canvas>
+      </div>
+    </div>
+
+    <div id="board-container">
+      <canvas id="board"></canvas>
+      <div id="overlay" class="hidden">
+        <div id="overlay-msg"></div>
+      </div>
+    </div>
+
+    <div id="touch-controls">
+      <div class="touch-row">
+        <button class="tc-btn purple" id="tc-rotate">↑<br><span>RODAR</span></button>
+      </div>
+      <div class="touch-row middle-row">
+        <button class="tc-btn cyan" id="tc-left">◀</button>
+        <button class="tc-btn cyan" id="tc-down">▼</button>
+        <button class="tc-btn cyan" id="tc-right">▶</button>
+      </div>
+      <div class="touch-row">
+        <button class="tc-btn yellow" id="tc-drop">⬇ DROP</button>
+      </div>
+    </div>
+
+    <div id="action-buttons">
+      <button class="action-btn cyan" id="btn-restart">⟳ RECOMPILAR</button>
+      <button class="action-btn purple" id="btn-pause">⏸ PAUSA</button>
+    </div>
+
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>
