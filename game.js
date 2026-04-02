@@ -311,12 +311,38 @@ function togglePause() {
   else hideOverlay();
 }
 
+// ─── Música ──────────────────────────────────────────────────
+const introMusic = new Audio('inttetris.mp3');
+const gameMusic  = new Audio('tetris.mp3');
+introMusic.loop  = true;
+gameMusic.loop   = true;
+
+function startIntroMusic() {
+  gameMusic.pause();
+  gameMusic.currentTime = 0;
+  introMusic.currentTime = 0;
+  introMusic.play().catch(() => {});
+}
+
+function startGameMusic() {
+  introMusic.pause();
+  introMusic.currentTime = 0;
+  if (gameMusic.paused) {
+    gameMusic.currentTime = 0;
+    gameMusic.play().catch(() => {});
+  }
+}
+
 // ─── Botões ──────────────────────────────────────────────────
-document.getElementById('btn-restart').addEventListener('click', initGame);
+document.getElementById('btn-restart').addEventListener('click', () => {
+  startGameMusic();
+  initGame();
+});
 
 // ─── Ecrã inicial ────────────────────────────────────────────
 document.getElementById('btn-play').addEventListener('click', () => {
   document.getElementById('start-screen').classList.add('hidden');
+  startGameMusic();
   initGame();
 });
 
@@ -326,4 +352,5 @@ window.addEventListener('resize', () => { resizeCanvas(); draw(); });
 // ─── Start ───────────────────────────────────────────────────
 window.addEventListener('load', () => {
   resizeCanvas();
+  startIntroMusic();
 });
