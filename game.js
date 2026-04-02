@@ -87,6 +87,52 @@ function randomPiece() {
 // ─── Estado ───────────────────────────────────────────────────
 let board, current, next, score, combo, level, lines, gameOver, paused, dropTimer;
 
+// ─── Áudio ────────────────────────────────────────────────────
+const musicIntro = new Audio('inttetris.mp3');
+const musicGame  = new Audio('tetris.mp3');
+musicIntro.loop  = true;
+musicGame.loop   = true;
+musicIntro.volume = 0.5;
+musicGame.volume  = 0.5;
+
+let muted = false;
+
+function playIntroMusic() {
+  musicGame.pause();
+  musicGame.currentTime = 0;
+  if (!muted) musicIntro.play().catch(() => {});
+}
+
+function playGameMusic() {
+  musicIntro.pause();
+  musicIntro.currentTime = 0;
+  if (!muted) musicGame.play().catch(() => {});
+}
+
+function stopAllMusic() {
+  musicIntro.pause();
+  musicIntro.currentTime = 0;
+  musicGame.pause();
+  musicGame.currentTime = 0;
+}
+
+function toggleMute() {
+  muted = !muted;
+  const btn = document.getElementById('btn-mute');
+  if (muted) {
+    musicIntro.pause();
+    musicGame.pause();
+    if (btn) btn.textContent = '🔇 SOM';
+  } else {
+    if (btn) btn.textContent = '🔊 SOM';
+    if (document.getElementById('start-screen').classList.contains('hidden')) {
+      if (!gameOver && !paused) musicGame.play().catch(() => {});
+    } else {
+      musicIntro.play().catch(() => {});
+    }
+  }
+}
+
 function initGame() {
   resizeCanvas();
   board    = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
@@ -98,6 +144,7 @@ function initGame() {
   hideOverlay();
   clearInterval(dropTimer);
   dropTimer = setInterval(tick, getDropInterval());
+  playGameMusic();
 }
 
 function getDropInterval() { return Math.max(100, 800 - (level-1)*70); }
@@ -208,6 +255,7 @@ function hideOverlay() { document.getElementById('overlay').classList.add('hidde
 function triggerGameOver() {
   gameOver = true;
   clearInterval(dropTimer);
+  stopAllMusic();
   showOverlay('FALHA CRÍTICA!\nSTACK OVERFLOW!', '#ff2244', null);
 }
 
@@ -307,8 +355,13 @@ document.addEventListener('keydown', e => {
 function togglePause() {
   if (gameOver) return;
   paused = !paused;
-  if (paused) showOverlay('PAUSADO', '#cc00ff', null);
-  else hideOverlay();
+  if (paused) {
+    musicGame.pause();
+    showOverlay('PAUSADO', '#cc00ff', null);
+  } else {
+    if (!muted) musicGame.play().catch(() => {});
+    hideOverlay();
+  }
 }
 
 // ─── Botões ──────────────────────────────────────────────────
@@ -319,6 +372,9 @@ document.getElementById('btn-play').addEventListener('click', () => {
   document.getElementById('start-screen').classList.add('hidden');
   initGame();
 });
+
+// ─── Botão mute ──────────────────────────────────────────────
+document.getElementById('btn-mute')?.addEventListener('click', toggleMute);
 
 // ─── Resize ──────────────────────────────────────────────────
 window.addEventListener('resize', () => { resizeCanvas(); draw(); });
