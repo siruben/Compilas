@@ -42,6 +42,25 @@ body {
   padding: 0;
 }
 
+/* ── Ecrã do logo ── */
+#logo-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+#logo-screen.hidden { display: none; }
+
+#logo-img {
+  max-width: 80vw;
+  max-height: 80vh;
+  object-fit: contain;
+}
+
 /* ── Ecrã inicial ── */
 #start-screen {
   position: fixed;

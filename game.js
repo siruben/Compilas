@@ -158,7 +158,7 @@ function clearLines() {
     level  = Math.floor(lines/10)+1;
     clearInterval(dropTimer);
     dropTimer = setInterval(tick, getDropInterval());
-    showOverlay(`COMPILADO!\n+${pts} pts`, '#00ff88', 1200);
+    showOverlay(`compilada`, '#00ff88', 1200);
   } else { combo = 0; }
   updateHUD();
 }
@@ -213,7 +213,7 @@ function triggerGameOver() {
   gameOver = true;
   clearInterval(dropTimer);
   bgMusic.pause();
-  showOverlay('FALHA CRÍTICA!\nSTACK OVERFLOW!', '#ff2244', null);
+  showOverlay('já foste', '#ff2244', null);
 }
 
 // ─── Render ───────────────────────────────────────────────────
@@ -319,8 +319,12 @@ function togglePause() {
 // ─── Botões ──────────────────────────────────────────────────
 document.getElementById('btn-restart').addEventListener('click', initGame);
 
+const introMusic = document.getElementById('intro-music');
+
 // ─── Ecrã inicial ────────────────────────────────────────────
 document.getElementById('btn-play').addEventListener('click', () => {
+  introMusic.pause();
+  introMusic.currentTime = 0;
   document.getElementById('start-screen').classList.add('hidden');
   initGame();
 });
@@ -331,4 +335,9 @@ window.addEventListener('resize', () => { resizeCanvas(); draw(); });
 // ─── Start ───────────────────────────────────────────────────
 window.addEventListener('load', () => {
   resizeCanvas();
+  setTimeout(() => {
+    document.getElementById('logo-screen').classList.add('hidden');
+    document.getElementById('start-screen').classList.remove('hidden');
+    introMusic.play().catch(() => {});
+  }, 4000);
 });
