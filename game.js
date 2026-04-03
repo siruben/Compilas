@@ -87,6 +87,8 @@ function randomPiece() {
 // ─── Estado ───────────────────────────────────────────────────
 let board, current, next, score, combo, level, lines, gameOver, paused, dropTimer;
 
+const bgMusic = document.getElementById('bg-music');
+
 function initGame() {
   resizeCanvas();
   board    = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
@@ -98,6 +100,8 @@ function initGame() {
   hideOverlay();
   clearInterval(dropTimer);
   dropTimer = setInterval(tick, getDropInterval());
+  bgMusic.currentTime = 0;
+  bgMusic.play().catch(() => {});
 }
 
 function getDropInterval() { return Math.max(100, 800 - (level-1)*70); }
@@ -208,6 +212,7 @@ function hideOverlay() { document.getElementById('overlay').classList.add('hidde
 function triggerGameOver() {
   gameOver = true;
   clearInterval(dropTimer);
+  bgMusic.pause();
   showOverlay('FALHA CRÍTICA!\nSTACK OVERFLOW!', '#ff2244', null);
 }
 
@@ -307,8 +312,8 @@ document.addEventListener('keydown', e => {
 function togglePause() {
   if (gameOver) return;
   paused = !paused;
-  if (paused) showOverlay('PAUSADO', '#cc00ff', null);
-  else hideOverlay();
+  if (paused) { bgMusic.pause(); showOverlay('PAUSADO', '#cc00ff', null); }
+  else { bgMusic.play().catch(() => {}); hideOverlay(); }
 }
 
 // ─── Botões ──────────────────────────────────────────────────
