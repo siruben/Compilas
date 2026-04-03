@@ -1,3 +1,38 @@
+// ─── Música ───────────────────────────────────────────────────
+const audioIntro = new Audio('inttetris.mp3');
+const audioGame  = new Audio('tetris.mp3');
+audioIntro.loop  = true;
+audioGame.loop   = true;
+audioIntro.volume = 0.6;
+audioGame.volume  = 0.6;
+
+function playIntroMusic() {
+  audioGame.pause();
+  audioGame.currentTime = 0;
+  audioIntro.currentTime = 0;
+  audioIntro.play().catch(() => {});
+}
+
+function playGameMusic() {
+  audioIntro.pause();
+  audioIntro.currentTime = 0;
+  audioGame.currentTime = 0;
+  audioGame.play().catch(() => {});
+}
+
+function pauseGameMusic() {
+  audioGame.pause();
+}
+
+function resumeGameMusic() {
+  audioGame.play().catch(() => {});
+}
+
+function stopGameMusic() {
+  audioGame.pause();
+  audioGame.currentTime = 0;
+}
+
 // ─── Cores neon (sync com CSS) ────────────────────────────────
 const NEON = {
   small:  { fill: '#ff00aa', glow: '#ff00aa' },
@@ -98,6 +133,7 @@ function initGame() {
   hideOverlay();
   clearInterval(dropTimer);
   dropTimer = setInterval(tick, getDropInterval());
+  playGameMusic();
 }
 
 function getDropInterval() { return Math.max(100, 800 - (level-1)*70); }
@@ -208,6 +244,7 @@ function hideOverlay() { document.getElementById('overlay').classList.add('hidde
 function triggerGameOver() {
   gameOver = true;
   clearInterval(dropTimer);
+  stopGameMusic();
   showOverlay('FALHA CRÍTICA!\nSTACK OVERFLOW!', '#ff2244', null);
 }
 
@@ -307,8 +344,8 @@ document.addEventListener('keydown', e => {
 function togglePause() {
   if (gameOver) return;
   paused = !paused;
-  if (paused) showOverlay('PAUSADO', '#cc00ff', null);
-  else hideOverlay();
+  if (paused) { pauseGameMusic(); showOverlay('PAUSADO', '#cc00ff', null); }
+  else { resumeGameMusic(); hideOverlay(); }
 }
 
 // ─── Botões ──────────────────────────────────────────────────
@@ -326,4 +363,5 @@ window.addEventListener('resize', () => { resizeCanvas(); draw(); });
 // ─── Start ───────────────────────────────────────────────────
 window.addEventListener('load', () => {
   resizeCanvas();
+  playIntroMusic();
 });
