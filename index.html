@@ -26,13 +26,9 @@
 
   <div id="wrapper">
 
-    <div id="header">
-      <span id="title-main">COMPILAS?</span>
-    </div>
-
     <div id="game-area">
 
-      <!-- HUD lateral -->
+      <!-- HUD lateral esquerdo -->
       <div id="side-hud">
         <div class="hud-box">
           <div class="hud-label">SCORE</div>
@@ -60,28 +56,31 @@
         </div>
       </div>
 
+      <!-- HUD lateral direito: pausa + recompilar -->
+      <div id="side-hud-right">
+        <button class="tc-btn purple side-ctrl" id="tc-pause">⏸<br><span>PAUSA</span></button>
+        <button class="tc-btn cyan side-ctrl" id="btn-restart">⟳<br><span>RESET</span></button>
+      </div>
+
     </div>
 
     <div id="touch-controls">
       <div class="touch-row">
-        <button class="tc-btn cyan" id="tc-left">◀<br><span>ESQ</span></button>
-        <button class="tc-btn purple" id="tc-rotate">↑<br><span>RODAR</span></button>
-        <button class="tc-btn cyan" id="tc-right">▶<br><span>DIR</span></button>
+        <button class="tc-btn purple wide" id="tc-rotate">↑<br><span>RODAR</span></button>
       </div>
       <div class="touch-row">
-        <button class="tc-btn cyan" id="tc-down">▼<br><span>BAIXO</span></button>
-        <button class="tc-btn yellow" id="tc-drop">⬇<br><span>DROP</span></button>
-        <button class="tc-btn purple" id="tc-pause">⏸<br><span>PAUSA</span></button>
+        <button class="tc-btn cyan wide-half" id="tc-left">◀<br><span>ESQ</span></button>
+        <button class="tc-btn cyan wide-half" id="tc-right">▶<br><span>DIR</span></button>
       </div>
-    </div>
-
-    <div id="action-buttons">
-      <button class="action-btn cyan" id="btn-restart">⟳ RECOMPILAR</button>
+      <div class="touch-row">
+        <button class="tc-btn yellow wide" id="tc-drop">⬇<br><span>DROP</span></button>
+      </div>
     </div>
 
   </div>
   <audio id="bg-music" src="tetris.mp3" loop></audio>
-  <audio id="intro-music" src="inttetris.mp3" loop></audio>
+  <audio id="intro-music" src="intretis.mp3" loop></audio>
+  <audio id="gameover-music" src="gameover.mp3"></audio>
   <script src="game.js"></script>
 </body>
 </html>

@@ -5,6 +5,7 @@ const NEON = {
   large:  { fill: '#00ff88', glow: '#00ff88' },
   base:   { fill: '#ffaa00', glow: '#ffaa00' },
   cube:   { fill: '#ff4444', glow: '#ff4444' },
+  ipiece: { fill: '#cc00ff', glow: '#cc00ff' },
   ghost:  { fill: '#ffffff', glow: null },
 };
 
@@ -21,15 +22,14 @@ let BLOCK = 28;
 
 function resizeCanvas() {
   const controls   = document.getElementById('touch-controls');
-  const actions    = document.getElementById('action-buttons');
-  const header     = document.getElementById('header');
   const sideHud    = document.getElementById('side-hud');
+  const sideHudR   = document.getElementById('side-hud-right');
 
   const totalH     = window.innerHeight;
-  const usedH      = header.offsetHeight + controls.offsetHeight + actions.offsetHeight + 50;
+  const usedH      = controls.offsetHeight + 50;
   const availH     = Math.max(totalH - usedH, 200);
 
-  const sideW      = (sideHud ? sideHud.offsetWidth : 66) + 10;
+  const sideW      = (sideHud ? sideHud.offsetWidth : 66) + (sideHudR ? sideHudR.offsetWidth : 66) + 14;
   const availW     = Math.min(window.innerWidth, 480) - 8 - sideW;
 
   const blockByH   = Math.floor(availH / ROWS);
@@ -69,16 +69,16 @@ function randomPiece() {
     { tipo: 'small',  haste: 1 },
     { tipo: 'small',  haste: 1 },
     { tipo: 'medium', haste: 2 },
-    { tipo: 'medium', haste: 2 },
-    { tipo: 'large',  haste: 3 },
     { tipo: 'base',   haste: 0 },
     { tipo: 'cube',   haste: -1 },
+    { tipo: 'ipiece', haste: -2 },
   ];
   const t = tipos[Math.floor(Math.random() * tipos.length)];
   let baseCells;
-  if (t.tipo === 'cube')       baseCells = [[0,0]];
-  else if (t.tipo === 'base')  baseCells = [[0,0],[1,0],[2,0]];
-  else                         baseCells = makeT(t.haste);
+  if (t.tipo === 'cube')        baseCells = [[0,0]];
+  else if (t.tipo === 'ipiece') baseCells = [[0,0],[0,1],[0,2],[0,3]];
+  else if (t.tipo === 'base')   baseCells = [[0,0],[1,0],[2,0]];
+  else                          baseCells = makeT(t.haste);
   const rots = allRotations(baseCells);
   return { cells: rots[0], rotations: rots, rotIndex: 0, tipo: t.tipo,
            x: Math.floor(COLS/2)-1, y: 0 };
@@ -87,7 +87,19 @@ function randomPiece() {
 // ─── Estado ───────────────────────────────────────────────────
 let board, current, next, score, combo, level, lines, gameOver, paused, dropTimer;
 
-const bgMusic = document.getElementById('bg-music');
+const bgMusic       = document.getElementById('bg-music');
+const gameoverMusic = document.getElementById('gameover-music');
+
+// ─── Níveis: linhas acumuladas necessárias para avançar ───────
+const LEVEL_THRESHOLDS = [0, 25, 45, 60, 70];
+
+function getLevel(totalLines) {
+  if (totalLines >= LEVEL_THRESHOLDS[4]) return 5;
+  if (totalLines >= LEVEL_THRESHOLDS[3]) return 4;
+  if (totalLines >= LEVEL_THRESHOLDS[2]) return 3;
+  if (totalLines >= LEVEL_THRESHOLDS[1]) return 2;
+  return 1;
+}
 
 function initGame() {
   resizeCanvas();
@@ -100,11 +112,16 @@ function initGame() {
   hideOverlay();
   clearInterval(dropTimer);
   dropTimer = setInterval(tick, getDropInterval());
+  gameoverMusic.pause();
+  gameoverMusic.currentTime = 0;
   bgMusic.currentTime = 0;
   bgMusic.play().catch(() => {});
 }
 
-function getDropInterval() { return Math.max(100, 800 - (level-1)*70); }
+function getDropInterval() {
+  const intervals = [1500, 1000, 600, 300, 120];
+  return intervals[Math.min(level - 1, 4)];
+}
 
 function spawnPiece() {
   current   = next;
@@ -155,7 +172,7 @@ function clearLines() {
     const base = [0,100,300,500,800][Math.min(cleared,4)];
     const pts  = base * level * combo;
     score += pts; lines += cleared;
-    level  = Math.floor(lines/10)+1;
+    level  = getLevel(lines);
     clearInterval(dropTimer);
     dropTimer = setInterval(tick, getDropInterval());
     showOverlay(`compilada`, '#00ff88', 1200);
@@ -213,7 +230,9 @@ function triggerGameOver() {
   gameOver = true;
   clearInterval(dropTimer);
   bgMusic.pause();
-  showOverlay('já foste', '#ff2244', null);
+  gameoverMusic.currentTime = 0;
+  gameoverMusic.play().catch(() => {});
+  showOverlay('JÁ FOSTE', '#ff2244', null);
 }
 
 // ─── Render ───────────────────────────────────────────────────
@@ -291,7 +310,6 @@ function bindTouch(id, fn) {
 
 bindTouch('tc-left',   moveLeft);
 bindTouch('tc-right',  moveRight);
-bindTouch('tc-down',   moveDown);
 bindTouch('tc-rotate', rotate);
 bindTouch('tc-drop',   hardDrop);
 bindTouch('tc-pause',  togglePause);
