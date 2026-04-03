@@ -338,6 +338,15 @@ window.addEventListener('load', () => {
   setTimeout(() => {
     document.getElementById('logo-screen').classList.add('hidden');
     document.getElementById('start-screen').classList.remove('hidden');
-    introMusic.play().catch(() => {});
+    introMusic.play().catch(() => {
+      const playOnInteraction = () => {
+        if (document.getElementById('start-screen').classList.contains('hidden')) return;
+        introMusic.play().catch(() => {});
+        document.removeEventListener('click', playOnInteraction);
+        document.removeEventListener('touchstart', playOnInteraction);
+      };
+      document.addEventListener('click', playOnInteraction);
+      document.addEventListener('touchstart', playOnInteraction);
+    });
   }, 4000);
 });
