@@ -332,12 +332,14 @@ document.getElementById('btn-play').addEventListener('click', () => {
 // ─── Resize ──────────────────────────────────────────────────
 window.addEventListener('resize', () => { resizeCanvas(); draw(); });
 
+// ─── Botão continuar (logo → ecrã inicial) ───────────────────
+document.getElementById('btn-continue').addEventListener('click', () => {
+  document.getElementById('logo-screen').classList.add('hidden');
+  document.getElementById('start-screen').classList.remove('hidden');
+  introMusic.play().catch(() => {});
+});
+
 // ─── Start ───────────────────────────────────────────────────
 window.addEventListener('load', () => {
   resizeCanvas();
-  setTimeout(() => {
-    document.getElementById('logo-screen').classList.add('hidden');
-    document.getElementById('start-screen').classList.remove('hidden');
-    introMusic.play().catch(() => {});
-  }, 4000);
 });
