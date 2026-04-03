@@ -7,12 +7,18 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>COMPILAS?</title>
+  <link rel="icon" type="image/png" href="Icont.png" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
+  <!-- Ecrã do logo -->
+  <div id="logo-screen">
+    <img id="logo-img" src="logotetris.png" alt="Tetris Logo" />
+  </div>
+
   <!-- Ecrã inicial -->
-  <div id="start-screen">
+  <div id="start-screen" class="hidden">
     <div id="start-title">COMPILAS?</div>
     <button id="btn-play" class="action-btn cyan">▶ JOGAR</button>
   </div>
@@ -74,6 +80,7 @@
 
   </div>
   <audio id="bg-music" src="tetris.mp3" loop></audio>
+  <audio id="intro-music" src="inttetris.mp3" loop></audio>
   <script src="game.js"></script>
 </body>
 </html>
