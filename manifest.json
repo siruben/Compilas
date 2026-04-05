@@ -1,0 +1,19 @@
+{
+  "name": "COMPILAS?",
+  "short_name": "COMPILAS",
+  "description": "Jogo estilo Tetris com peças T de haste variável, estilo neon/cyberpunk.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#07070f",
+  "theme_color": "#00ffff",
+  "icons": [
+    {
+      "src": "Icont.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -6,6 +6,8 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#00ffff" />
+  <link rel="manifest" href="manifest.json" />
   <title>COMPILAS?</title>
   <link rel="icon" type="image/png" href="Icont.png" />
   <link rel="stylesheet" href="style.css" />
@@ -82,5 +84,12 @@
   <audio id="intro-music" src="intretis.mp3" loop></audio>
   <audio id="gameover-music" src="gameover.mp3"></audio>
   <script src="game.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(function(err) {
+        console.warn('Service Worker registration failed:', err);
+      });
+    }
+  </script>
 </body>
 </html>
