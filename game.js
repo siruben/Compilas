@@ -334,8 +334,33 @@ function togglePause() {
   else { bgMusic.play().catch(() => {}); hideOverlay(); }
 }
 
+// ─── Música ──────────────────────────────────────────────────
+const introMusic = new Audio('inttetris.mp3');
+const gameMusic  = new Audio('tetris.mp3');
+introMusic.loop  = true;
+gameMusic.loop   = true;
+
+function startIntroMusic() {
+  gameMusic.pause();
+  gameMusic.currentTime = 0;
+  introMusic.currentTime = 0;
+  introMusic.play().catch(() => {});
+}
+
+function startGameMusic() {
+  introMusic.pause();
+  introMusic.currentTime = 0;
+  if (gameMusic.paused) {
+    gameMusic.currentTime = 0;
+    gameMusic.play().catch(() => {});
+  }
+}
+
 // ─── Botões ──────────────────────────────────────────────────
-document.getElementById('btn-restart').addEventListener('click', initGame);
+document.getElementById('btn-restart').addEventListener('click', () => {
+  startGameMusic();
+  initGame();
+});
 
 const introMusic = document.getElementById('intro-music');
 
@@ -344,6 +369,7 @@ document.getElementById('btn-play').addEventListener('click', () => {
   introMusic.pause();
   introMusic.currentTime = 0;
   document.getElementById('start-screen').classList.add('hidden');
+  startGameMusic();
   initGame();
 });
 
@@ -360,4 +386,5 @@ document.getElementById('btn-continue').addEventListener('click', () => {
 // ─── Start ───────────────────────────────────────────────────
 window.addEventListener('load', () => {
   resizeCanvas();
+  startIntroMusic();
 });
